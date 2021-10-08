@@ -1,7 +1,12 @@
-git 
+let express = require('express');
 
-server 
+let app = express();
 
-and TextDecoderStream.TextDecoderStream
+app.get('/', function(req, res){
+    // res.send("Hello, welcome to my Action Item List!")
+    res.sendFile('todoApp.html', {root: __dirname})
+     
+    
 
-document.getElementById
+});
+app.listen(3000);
