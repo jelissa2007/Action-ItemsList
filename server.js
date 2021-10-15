@@ -1,24 +1,41 @@
 let express = require('express');
+let mongodb = require('mongodb');
 
 let app = express();
+
+let db
+let uri = 'yourUri'
+let connectionString = 'mongodb+srv://todoUser:actionlist@cluster0.d9szq.mongodb.net/TodoApp?retryWrites=true&w=majority'
+
+
+mongodb.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology: true}, function(err, client) {
+   db = client.db()
+   app.listen(3000);
+
+});
 
 app.use(express.urlencoded({extended: false}));
 
 app.get('/', function(req, res){
-    // res.send("Hello, welcome to my Action Item List!")
+    
     res.sendFile('todoApp.html', {root: __dirname})
      
     
 
 });
 
-// app.post(a, b)
+
 
 app.post('/create-item', function(req, res) {
-    console.log(req.body.item)
+   
+    db.collection('items').insertOne({text: req.body.item}, function(){
 
-    res.send('thanks for submiting you rock!')
+        res.send('thanks for submiting you rock!')
+
+
+    });
+
+   
 
 });
 
-app.listen(3000);
