@@ -1,17 +1,20 @@
 let express = require('express');
-let mongodb = require('mongodb');
+const mongoose = require('mongoose');
+const  mongodb = require('mongodb');
+const { MongoClient } = require('mongoose/node_modules/mongodb');
 
 let app = express();
 
-let db
-let uri = 'yourUri'
-let connectionString = 'mongodb+srv://todoUser:actionlist@cluster0.d9szq.mongodb.net/TodoApp?retryWrites=true&w=majority'
+// let db = 
 
+let connectionString = 'mongodb+srv://todoUser:actionlist@cluster0.d9szq.mongodb.net/TodoApp?retryWrites=true&w=majority';
 
-mongodb.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology: true}, function(err, client) {
-   db = client.db()
-   app.listen(3000);
+const client = new MongoClient(connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
 
+client.connect (err =>  {
+    db = client.db()
+    app.listen(3000)
+    
 });
 
 app.use(express.urlencoded({extended: false}));
@@ -19,11 +22,9 @@ app.use(express.urlencoded({extended: false}));
 app.get('/', function(req, res){
     
     res.sendFile('todoApp.html', {root: __dirname})
-     
-    
+       
 
 });
-
 
 
 app.post('/create-item', function(req, res) {
